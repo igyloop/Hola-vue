@@ -13,11 +13,18 @@
         const vm = Vue.createApp({
             data() {
                 return {
-                    attr: 'alt',
-                    img: "https://m.media-amazon.com/images/I/611mSsayRxL.jpg"
+                    evt: 'submit',
+                    counter: 0,
                 };
             },
-            template: `<img v-bind:[attr]="img">`
+            methods: {
+                submit() {
+                    this.counter++;
+                }
+            },
+            template: `<form v-on:[evt].prevent="submit">
+                <button>{{ counter }}</button>
+                </form>`,
         }).mount('#app');
         console.log(vm);
     </script>
