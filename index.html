@@ -13,15 +13,22 @@
         data() {
           return {
             text: "Hello Vue",
+            open: false
           };
         },
+        watch: {
+          open(value) {
+            if (value) {
+              this.text = "Puerta abierta";
+            } else {
+              this.text = "Puerta cerrada";
+            }
+          }
+        },
         template: `
-            <p>{{ text }}</p>
-            <input
-              type="text"
-              v-model="text"
-            />
-            `,
+          <div>{{ text }}</div>
+          <button @click="open = !open">{{ open ? "Cerrar" : "Abrir" }}</button>
+        `,
       }).mount("#app");
     </script>
   </body>
