@@ -7,174 +7,36 @@
   </head>
   <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <style>
-      html,
-      body {
-        height: 100vh;
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      #app,
-      .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-      }
-      button {
-        margin-top: 24px;
-        border: none;
-        background-color: white;
-        padding: 8px 24px;
-        border-radius: 12px;
-      }
-      .closed {
-        background-color: #eca1a6;
-      }
-      .open {
-        background-color: #b5e7a0;
-      }
-      .formulario {
-        display: flex;
-        flex-direction: column;
-      }
-      .list {
-        display: flex;
-        flex-direction: column;
-      }
-      .item {
-        border: 1px solid black;
-      }
-      .title {
-        font-weight: bold;
-        font-size: 1.2rem;
-      }
-    </style>
     <div id="app"></div>
     <script>
       const app = Vue.createApp({
-        data() {
-          return {
-            text: "Accede a tu cuenta",
-            open: false,
-            username: "",
-            posts: [
-              {
-                title: "Título 1",
-                description: "Lorem ipsum...",
-              },
-            ],
-          };
-        },
-        watch: {
-          open(value) {
-            if (value) {
-              this.text = "Cierra sesión";
-            } else {
-              this.text = "Accede a tu cuenta";
-              this.username = "";
-            }
-          },
-        },
-        methods: {
-          crearPost(nuevoPost) {
-            this.posts.push(nuevoPost);
-          },
-          eliminarPost(index) {
-            this.posts.splice(index, 1);
-          },
-        },
-        computed: {
-          label() {
-            return this.open ? "Salir" : "Acceder";
-          },
-          styles() {
-            return this.open ? "open" : "closed";
-          },
-        },
         template: `
-          <div class="container" :class="styles">
-            <h2>{{ text }}</h2>
-            <div v-if="open">
-              <p>Hola, {{ username }}</p>
-              <div class="formulario">
-                <crear-post 
-                  @crear="crearPost"
-                />
-              </div>
-              <br>
-              <div class="list">
-                <item
-                  v-for="(item, i) in posts"
-                  :key="i"
-                  :post="item"
-                  :index="i"
-                  @eliminar="eliminarPost"
-                />
-              </div>
-            </div>
-            <div v-else>
-              <div>Username: </div>
-              <input type="text" v-model="username" />
-            </div>
-            <button @click="open = !open">
-              <div v-if="!open">Acceder</div>
-              <div v-else>Salir</div>
-            </button>
-          </div>
-        `,
-      });
-
-      app.component("item", {
-        props: ["post", "index"],
-        emits: ["eliminar"],
-        methods: {
-          solicitarEliminar() {
-            this.$emit("eliminar", this.index);
-          },
-        },
-        template: `
-        <div class="item">
-          <div class="title">{{ post.title }}</div>
-          <p>{{ post.description }}</p>
-          <button @click="solicitarEliminar()">Eliminar</button>
+        <div>
+          <v-layout>
+            <template v-slot:header>
+              <button>Click Me</button>
+            </template>
+            <template v-slot:content>
+              Lorem imsum
+            </template>
+          </v-layout>
         </div>
-        `,
-      });
-
-      app.component("crear-post", {
-        data() {
-          return {
-            title: "",
-            description: "",
-          };
-        },
-        emits: ["crear"],
-        methods: {
-          emitirPost() {
-            this.$emit("crear", {
-              title: this.title,
-              description: this.description,
-            });
-            this.title = "";
-            this.description = "";
-          },
-        },
-        template: `
-        <div class="title">Crear un post</div>
-        <label>Título</label>
-        <input type="text" v-model="title" />
-        <label>Descripción</label>
-        <input type="text" v-model="description" />
-        <button type="submit" @click.prevent="emitirPost()">
-          Crear
-        </button>
         `
       });
 
-      const vm = app.mount("#app");
+      app.component("v-layout", {
+        template: `
+        <header>
+          <slot name="header"></slot>
+        </header>
+        <div>
+          <slot name="content"></slot>
+        </div>
+        `
+      }
+      );
+
+      const vm = app.mount('#app');
     </script>
   </body>
 </html>
