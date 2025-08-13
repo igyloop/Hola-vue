@@ -12,39 +12,28 @@
       const app = Vue.createApp({
         data() {
           return {
-            text: "Hello, Vue!"
-          };
-        },
-        provide() {
-          return {
-            otroTexto: this.text
-          };
-        },
-        template: `
-          <div>{{ text }}</div>
-          <otro />
-        `
-      });
-
-      app.component("otro", {
-        template: `
-          <tercer />
-        `
-      });
-      
-      app.component("tercer", {
-        inject: {
-          otroTexto: {
-            from: "otroTexto",
-            default: "Texto por defecto"
+            text: "Hello Vue!"
           }
         },
         template: `
-          <div>{{ otroTexto }}</div>
+          <v-button
+            ref="elements"
+            :label="text">
+          </v-button>
+        `
+      });
+
+      app.component("v-button", {
+        props: ["label"],
+        template: `
+          <button>
+            {{ label }}
+          </button>
         `
       });
 
       const vm = app.mount("#app");
+      console.log(vm.$props); 
     </script>
   </body>
 </html>
