@@ -10,42 +10,37 @@
     <div id="app"></div>
     <script>
       const app = Vue.createApp({
-        data () {
+        data() {
           return {
-            items: ["Item 1", "Item 2", "Item 3",],
+            text: "Hello Vue!",
           };
         },
-        methods: {
-          remove(i) {
-            const item = this.items.filter((el_, index) => index !== i);
-            this.items = item;
-          }
-        },
         template: `
-          <ul>
-            <v-item
-              v-for="(item, i) in items"
-              v-bind:text="item"
-              v-on:remove="remove(i)"
+          <div>
+            <p>{{ text }}</p>
+            <v-input
+              v-model:value="text"
             />
-          </ul>
-        `,
+          </div>
+        `
       });
 
-      app.component("v-item", {
+      app.component("v-input", {
         props: {
-          text: String
+          value: String
         },
         methods: {
-          rm() {
-            this.$emit("remove");
+          input(e) {
+            this.$emit("update:value", e.target.value);
           }
         },
         template: `
-          <li v-on:click="rm">
-            {{ text }}
-          </li>
-        `,
+          <input
+            type="text"
+            v-bind:value="value"
+            v-on:input="input"
+          />
+        `
       });
 
       const vm = app.mount("#app");
